@@ -4,7 +4,7 @@ import com.ant.backendservices.rest.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Component
 public class ApiContext {
@@ -32,11 +32,11 @@ public class ApiContext {
         return executionContext.getRequestId();
     }
 
-    public void setRequestStartTime(Date startTime) {
+    public void setRequestStartTime(Instant startTime) {
         currentContext().setRequestStartTime(startTime);
     }
 
-    public Date getRequestStartTime() {
+    public Instant getRequestStartTime() {
         return executionContext.getRequestStartTime();
     }
 }

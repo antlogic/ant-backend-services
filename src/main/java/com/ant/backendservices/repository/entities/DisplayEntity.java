@@ -1,9 +1,10 @@
 package com.ant.backendservices.repository.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "displays", uniqueConstraints = {
@@ -16,14 +17,12 @@ public class DisplayEntity extends BaseEntity {
     private Long id;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private LocationEntity location;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private CompanyEntity company;
-
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "slide_id")
-//    private Set<SlideEntity> slides;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;

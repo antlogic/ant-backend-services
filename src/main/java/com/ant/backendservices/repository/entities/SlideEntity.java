@@ -1,6 +1,8 @@
 package com.ant.backendservices.repository.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -15,12 +17,15 @@ public class SlideEntity extends BaseEntity {
     private Long id;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private DisplayEntity displayEntity;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private LocationEntity location;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private CompanyEntity company;
 
     @Column(name = "name", nullable = false, length = 100)

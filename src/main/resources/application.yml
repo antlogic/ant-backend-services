@@ -1,0 +1,16 @@
+server:
+  port: ${PORT:8081}
+  servlet:
+    context-path: /antlogic
+
+spring:
+  application:
+    name: ant
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://ec2-174-129-33-13.compute-1.amazonaws.com:5432/d3ncrt5ot4valo}
+    username: ${SPRING_DATASOURCE_USERNAME:qjyxkwvbttpctw}
+    password: ${SPRING_DATASOURCE_PASSWORD:4ae65579d88407668b7137cc7b62f4014e3741b25e64b3c17726782971c8a4aa}
+  jpa:
+    database-platform: ${SPRING_JPA_DATABASE-PLATFORM:org.hibernate.dialect.PostgreSQL92Dialect}
+    hibernate:
+      ddl-auto: none

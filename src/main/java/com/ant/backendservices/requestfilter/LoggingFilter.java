@@ -11,6 +11,8 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
@@ -27,13 +29,15 @@ public class LoggingFilter implements Filter {
         try {
             setHeaders(requestWrapper);
             filterChain.doFilter(servletRequest,servletResponse);
+            log.info("Finished filter for request :: {} requestId :: {} time taken :: {}ms", requestWrapper.getRequestURI(),
+                    apiContext.getRequestId(), Duration.between(apiContext.getRequestStartTime(), Instant.now()).toMillis());
         } catch (Exception ex) {
             log.error("Unable to run filter for request :: {} :: {}", requestWrapper.getRequestURI(), ex);
         }
     }
 
     void setHeaders(HttpServletRequest request) {
-        apiContext.setRequestStartTime(new Date());
+        apiContext.setRequestStartTime(Instant.now());
         apiContext.setUserId(request.getHeader(ServiceConstants.USER_ID));
         String requestId = request.getHeader(ServiceConstants.REQUEST_ID);
         if (StringUtils.isEmpty(request)) {

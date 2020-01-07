@@ -13,6 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 public class UserController {
 
@@ -50,7 +54,9 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<UserEntity> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserEntity> getUser(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {
+        Cookie cookie = new Cookie("testCookie", "works");
+        response.addCookie(cookie);
         return new ResponseEntity<>(userRepository.findById(id).orElse(null), HttpStatus.OK);
     }
 }
