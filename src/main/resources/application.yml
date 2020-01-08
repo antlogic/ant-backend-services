@@ -10,7 +10,12 @@ spring:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://ec2-174-129-33-13.compute-1.amazonaws.com:5432/d3ncrt5ot4valo}
     username: ${SPRING_DATASOURCE_USERNAME:qjyxkwvbttpctw}
     password: ${SPRING_DATASOURCE_PASSWORD:4ae65579d88407668b7137cc7b62f4014e3741b25e64b3c17726782971c8a4aa}
+    initialization-mode: always
   jpa:
     database-platform: ${SPRING_JPA_DATABASE-PLATFORM:org.hibernate.dialect.PostgreSQL92Dialect}
     hibernate:
       ddl-auto: none
+
+app:
+  jwtSecret: JWTSecretNoOneCanCrack
+  jwtExpirationInMs: 3600000
