@@ -1,5 +1,6 @@
-package com.ant.backendservices.repository.entities;
+package com.ant.backendservices.model;
 
+import com.ant.backendservices.model.audit.UserDateAudit;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -7,18 +8,16 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "locations", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "id")
-})
+@Table(name = "locations")
 @Data
-public class LocationEntity extends BaseEntity {
+public class Location extends UserDateAudit {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private CompanyEntity company;
+    private Company company;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
