@@ -1,4 +1,4 @@
-package com.ant.backendservices.payload;
+package com.ant.backendservices.payload.request.auth;
 
 import lombok.Data;
 

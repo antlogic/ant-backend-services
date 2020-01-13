@@ -1,4 +1,4 @@
-package com.ant.backendservices.payload;
+package com.ant.backendservices.payload.request.auth;
 
 import lombok.Data;
 
@@ -32,6 +32,8 @@ public class SignUpRequest {
     @NotBlank
     @Size(min = 6, max = 20)
     private String password;
+
+    private Long companyId;
 
     @NotBlank
     @Size(min = 1, max = 15)

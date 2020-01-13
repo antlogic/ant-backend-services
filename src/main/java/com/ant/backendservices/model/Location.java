@@ -26,6 +26,6 @@ public class Location extends UserDateAudit {
     private String address;
 
     @Column(name = "phone_number", length = 11)
-    private Long phone_number;
+    private Long phoneNumber;
 
 }
