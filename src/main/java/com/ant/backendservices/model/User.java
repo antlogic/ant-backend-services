@@ -2,8 +2,6 @@ package com.ant.backendservices.model;
 
 import com.ant.backendservices.model.audit.DateAudit;
 import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -24,8 +22,7 @@ public class User extends DateAudit {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Company company;
 
     @Column(name = "first_name", nullable = false, length = 50)

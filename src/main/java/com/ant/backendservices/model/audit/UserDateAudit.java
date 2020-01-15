@@ -18,10 +18,10 @@ public class UserDateAudit extends DateAudit {
 
     @Column(name = "created_by", nullable = false, updatable = false)
     @CreatedBy
-    private Long createdBy;
+    private String createdBy;
 
     @Column(name = "updated_by", nullable = false, updatable = false)
     @LastModifiedBy
-    private Long updatedBy;
+    private String updatedBy;
 
 }

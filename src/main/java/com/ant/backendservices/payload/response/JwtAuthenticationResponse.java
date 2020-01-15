@@ -1,4 +1,4 @@
-package com.ant.backendservices.payload;
+package com.ant.backendservices.payload.response;
 
 import lombok.Data;
 

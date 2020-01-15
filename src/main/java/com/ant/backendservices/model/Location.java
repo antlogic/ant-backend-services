@@ -2,8 +2,6 @@ package com.ant.backendservices.model;
 
 import com.ant.backendservices.model.audit.UserDateAudit;
 import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -15,8 +13,7 @@ public class Location extends UserDateAudit {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Company company;
 
     @Column(name = "name", nullable = false, length = 100)
@@ -26,6 +23,6 @@ public class Location extends UserDateAudit {
     private String address;
 
     @Column(name = "phone_number", length = 11)
-    private Long phone_number;
+    private Long phoneNumber;
 
 }

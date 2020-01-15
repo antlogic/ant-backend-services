@@ -1,21 +1,17 @@
 package com.ant.backendservices.controller;
 
-import com.ant.backendservices.payload.UploadFileResponse;
-import com.ant.backendservices.repository.FileStorageRepository;
+import com.ant.backendservices.payload.response.UploadFileResponse;
 import com.ant.backendservices.service.FileStorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.util.List;
 
 @Slf4j
 @CrossOrigin("*")
@@ -26,6 +22,7 @@ public class FileController {
     private FileStorageService fileStorageService;
 
     @PostMapping(value = "/uploadFile")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<UploadFileResponse> uploadFile(@RequestParam("file") MultipartFile file) {
         String fileDownloadUri = fileStorageService.storeFile(file);
 

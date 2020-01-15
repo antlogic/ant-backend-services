@@ -1,13 +1,13 @@
-package com.ant.backendservices.payload;
+package com.ant.backendservices.payload.response;
 
 import lombok.Data;
 
 @Data
-public class ApiResponse {
+public class RegisterResponse {
     private Boolean success;
     private String message;
 
-    public ApiResponse(Boolean success, String message) {
+    public RegisterResponse(Boolean success, String message) {
         this.success = success;
         this.message = message;
     }
