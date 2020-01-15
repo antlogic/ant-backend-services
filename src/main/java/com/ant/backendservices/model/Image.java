@@ -15,9 +15,9 @@ public class Image extends UserDateAudit {
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     private Company company;
-
-    @ManyToOne(optional = true, cascade = CascadeType.REMOVE)
-    private Slide slide;
+//
+//    @ManyToOne(optional = true, cascade = CascadeType.REMOVE)
+//    private Slide slide;
 
     @Column(name = "file_name", nullable = false, length = 200)
     private String fileName;

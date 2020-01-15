@@ -15,12 +15,6 @@ public class CreateSlideRequest {
     @Size(max = 50)
     private String type;
 
-    private String imageUrl;
-
-    @NotNull
-    private Long locationId;
-
-    @NotNull
-    private Long displayId;
+    private Long imageId;
 
 }

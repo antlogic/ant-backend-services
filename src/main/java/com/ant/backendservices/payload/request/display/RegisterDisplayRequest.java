@@ -19,6 +19,4 @@ public class RegisterDisplayRequest {
 
     private Long transitionTimeMillis;
 
-    @NotNull
-    private Long locationId;
 }

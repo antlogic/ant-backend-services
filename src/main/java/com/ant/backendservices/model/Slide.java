@@ -24,6 +24,9 @@ public class Slide extends UserDateAudit {
     @ManyToOne(cascade = CascadeType.REMOVE)
     private Company company;
 
+    @OneToOne(cascade = CascadeType.DETACH)
+    private Image image;
+
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 

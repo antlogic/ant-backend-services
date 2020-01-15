@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class LocationService {
 
@@ -38,5 +40,10 @@ public class LocationService {
         Location location = locationTransformer.createLocationRequestToLocationEntity(createLocationRequest, company);
 
         return locationRepository.save(location);
+    }
+
+    @Transactional
+    public List<Location> getLocations(Long companyId) {
+        return locationRepository.findByCompanyId(companyId).orElse(null);
     }
 }
