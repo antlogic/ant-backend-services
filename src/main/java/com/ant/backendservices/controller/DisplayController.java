@@ -3,9 +3,9 @@ package com.ant.backendservices.controller;
 import com.ant.backendservices.model.Display;
 import com.ant.backendservices.payload.request.display.RegisterDisplayRequest;
 import com.ant.backendservices.payload.response.RegisterResponse;
-import com.ant.backendservices.repository.DisplayRepository;
 import com.ant.backendservices.service.AuthService;
 import com.ant.backendservices.service.DisplayService;
+import com.ant.backendservices.validator.DisplayRequestValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,9 +29,13 @@ public class DisplayController {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private DisplayRequestValidator displayRequestValidator;
+
     @PostMapping()
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<RegisterResponse> registerNewDisplay(@Valid @RequestBody RegisterDisplayRequest registerDisplayRequest) {
+        displayRequestValidator.validate(registerDisplayRequest);
         Long companyId = authService.getLoggedInCompanyId();
         Display display = displayService.createDisplay(registerDisplayRequest, companyId);
 

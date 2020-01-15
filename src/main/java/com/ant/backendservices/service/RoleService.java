@@ -5,9 +5,8 @@ import com.ant.backendservices.model.Role;
 import com.ant.backendservices.model.RoleName;
 import com.ant.backendservices.repository.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +19,6 @@ import java.util.Set;
 @Slf4j
 @Service
 public class RoleService {
-
-    @Value("${spring.jpa.hibernate.ddl-auto}")
-    private String initRoles;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -45,8 +41,7 @@ public class RoleService {
     @PostConstruct
     @Transactional
     public void initAppRoles() {
-        if (StringUtils.equalsIgnoreCase(initRoles, "create-drop")) {
-            roleRepository.deleteAll();
+        if (CollectionUtils.isEmpty(roleRepository.findAll())) {
             configRoles().forEach(role -> roleRepository.save(role));
             log.info("Initialized application access roles.");
         }

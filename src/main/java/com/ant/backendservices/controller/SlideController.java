@@ -1,6 +1,7 @@
 package com.ant.backendservices.controller;
 
 import com.ant.backendservices.model.Slide;
+import com.ant.backendservices.payload.request.slide.CreateSlideRequest;
 import com.ant.backendservices.repository.SlideRepository;
 import com.ant.backendservices.service.AuthService;
 import com.ant.backendservices.service.UserService;
@@ -9,10 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -36,6 +36,12 @@ public class SlideController {
         List<Slide> slides = slideRepository.getSlidesByCompanyId(companyId).orElse(null);
         return new ResponseEntity<>(slides, HttpStatus.OK);
     }
+//
+//    @PostMapping
+//    @PreAuthorize("hasRole('USER')")
+//    public ResponseEntity<> createSlide(@Valid @RequestBody CreateSlideRequest createSlideRequest) {
+//
+//    }
 
 
 }
