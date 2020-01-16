@@ -1,5 +1,6 @@
 package com.ant.backendservices.service;
 
+import com.ant.backendservices.error.Error;
 import com.ant.backendservices.exception.AppException;
 import com.ant.backendservices.model.Company;
 import com.ant.backendservices.model.Display;
@@ -33,13 +34,13 @@ public class DisplayService {
         Company company = companyService.getCompanyById(companyId);
 
         if (company == null) {
-            throw new AppException("Invalid companyId {}" + companyId + ".");
+            throw new AppException(Error.INTERNAL_SERVER_ERROR, "Invalid companyId {}" + companyId + ".");
         }
 
         Location location = locationService.getLocationById(locationId);
 
         if (location == null) {
-            throw new AppException("Invalid locationId {}" + locationId + ".");
+            throw new AppException(Error.INTERNAL_SERVER_ERROR, "Invalid locationId {}" + locationId + ".");
         }
 
         Display display = displayTransformer.registerDisplayRequestToDisplayEntity(registerDisplayRequest, location, company);

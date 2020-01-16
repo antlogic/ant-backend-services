@@ -1,5 +1,6 @@
 package com.ant.backendservices.service;
 
+import com.ant.backendservices.error.Error;
 import com.ant.backendservices.exception.AppException;
 import com.ant.backendservices.model.Role;
 import com.ant.backendservices.model.RoleName;
@@ -58,6 +59,6 @@ public class RoleService {
 
     @Transactional
     public Role getRole(RoleName roleName) {
-        return roleRepository.findByName(roleName).orElseThrow(() -> new AppException("User Role not set."));
+        return roleRepository.findByName(roleName).orElseThrow(() -> new AppException(Error.INTERNAL_SERVER_ERROR, "User Role not set."));
     }
 }

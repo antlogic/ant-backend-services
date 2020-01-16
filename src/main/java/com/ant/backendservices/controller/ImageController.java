@@ -18,7 +18,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/images")
+@RequestMapping("/v1/images")
 public class ImageController {
 
     @Autowired

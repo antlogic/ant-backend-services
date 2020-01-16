@@ -20,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @RestController()
-@RequestMapping("/locations/{locationId}/displays")
+@RequestMapping("/v1/locations/{locationId}/displays")
 public class DisplayController {
 
     @Autowired

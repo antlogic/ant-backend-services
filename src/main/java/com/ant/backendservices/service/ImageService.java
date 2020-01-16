@@ -1,5 +1,6 @@
 package com.ant.backendservices.service;
 
+import com.ant.backendservices.error.Error;
 import com.ant.backendservices.exception.AppException;
 import com.ant.backendservices.model.Company;
 import com.ant.backendservices.model.Image;
@@ -46,7 +47,7 @@ public class ImageService {
         Company company = companyService.getCompanyById(companyId);
 
         if (company == null) {
-            throw new AppException("Invalid companyId: " + companyId);
+            throw new AppException(Error.INTERNAL_SERVER_ERROR, "Invalid companyId: " + companyId);
         }
 
         String fileName = fileStorageService.storeFile(file);

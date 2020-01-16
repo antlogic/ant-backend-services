@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RestController()
-@RequestMapping("/locations")
+@RequestMapping("/v1/locations")
 public class LocationController {
 
     @Autowired

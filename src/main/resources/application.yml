@@ -1,20 +1,21 @@
 server:
   port: ${PORT:8081}
   servlet:
-    context-path: /antlogic
+    context-path: /upsign
 
 spring:
   application:
-    name: ant
+    name: upsignapi
+    version: v0.0.1BETA
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://ec2-174-129-33-120.compute-1.amazonaws.com:5432/d4sp6nouhfrhik}
-    username: ${SPRING_DATASOURCE_USERNAME:tckxrwltkbijbv}
-    password: ${SPRING_DATASOURCE_PASSWORD:d3f8b3998f686940d4461077593bc44dbd18d42449eb2e757050c821e2f91477}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     initialization-mode: always
   jpa:
     database-platform: ${SPRING_JPA_DATABASE-PLATFORM:org.hibernate.dialect.PostgreSQL92Dialect}
     hibernate:
-      ddl-auto: none
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL-AUTO}
   servlet:
     multipart:
       max-file-size: 20MB

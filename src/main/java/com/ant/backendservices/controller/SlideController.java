@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/locations/{locationId}/displays/{displayId}/slides")
+@RequestMapping("/v1/locations/{locationId}/displays/{displayId}/slides")
 public class SlideController {
 
     @Autowired
