@@ -2,9 +2,11 @@ package com.ant.backendservices.controller;
 
 import com.ant.backendservices.model.Slide;
 import com.ant.backendservices.payload.request.slide.CreateSlideRequest;
-import com.ant.backendservices.repository.SlideRepository;
+import com.ant.backendservices.payload.response.RegisterResponse;
+import com.ant.backendservices.payload.response.RetrieveSlidesResponse;
 import com.ant.backendservices.service.AuthService;
-import com.ant.backendservices.service.UserService;
+import com.ant.backendservices.service.SlideService;
+import com.ant.backendservices.transformer.SlideTransformer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,31 +19,40 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/slides")
+@RequestMapping("/v1/locations/{locationId}/displays/{displayId}/slides")
 public class SlideController {
 
     @Autowired
-    private SlideRepository slideRepository;
+    private SlideService slideService;
 
     @Autowired
-    private UserService userService;
+    private SlideTransformer slideTransformer;
 
     @Autowired
     private AuthService authService;
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<Slide>> getSlides() {
+    public ResponseEntity<RetrieveSlidesResponse> getSlides(@PathVariable Long locationId, @PathVariable Long displayId) {
         Long companyId = authService.getLoggedInCompanyId();
-        List<Slide> slides = slideRepository.getSlidesByCompanyId(companyId).orElse(null);
-        return new ResponseEntity<>(slides, HttpStatus.OK);
+        List<Slide> slides = slideService.getSlidesByCompanyId(companyId, locationId, displayId);
+        RetrieveSlidesResponse response = slideTransformer.slideEntityListToRetrieveSlidesResponse(slides);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-//
-//    @PostMapping
-//    @PreAuthorize("hasRole('USER')")
-//    public ResponseEntity<> createSlide(@Valid @RequestBody CreateSlideRequest createSlideRequest) {
-//
-//    }
+
+    @PostMapping
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<RegisterResponse> createSlide(@Valid @RequestBody CreateSlideRequest createSlideRequest, @PathVariable Long locationId, @PathVariable Long displayId) {
+        Long companyId = authService.getLoggedInCompanyId();
+        Slide slide = slideService.createSlide(createSlideRequest, companyId, locationId, displayId);
+
+        if (slide == null) {
+            return new ResponseEntity<>(new RegisterResponse(false, "Slide creation failed."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(new RegisterResponse(true, "Slide created successfully."), HttpStatus.OK);
+
+    }
 
 
 }

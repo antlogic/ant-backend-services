@@ -4,6 +4,7 @@ import com.ant.backendservices.exception.FileStorageException;
 import com.ant.backendservices.repository.FileStorageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,12 @@ import java.util.Collections;
 @Service
 public class FileStorageService {
 
+    @Value("${app.awsServices.bucketName}")
+    private static String bucketName;
+
+    @Value("${cloud.aws.region.static}")
+    private static String region;
+
     @Autowired
     private FileStorageRepository fileStorageRepository;
 
@@ -22,14 +29,14 @@ public class FileStorageService {
         String fileName = file.getOriginalFilename();
 
         try {
-            return createBucketFileURL(fileStorageRepository.uploadFile(file));
+            return fileStorageRepository.uploadFile(file);
         } catch (Exception ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
     }
 
-    private String createBucketFileURL(String fileName) {
-        return "https://" + fileStorageRepository.getBucketName() + ".s3." + fileStorageRepository.getRegion() + ".amazonaws.com/" + fileName;
+    public static String createBucketFileURL(String fileName) {
+        return "https://" + bucketName + ".s3." + region + ".amazonaws.com/" + fileName;
     }
 
 //    public Resource loadFileAsResource(String fileName) {

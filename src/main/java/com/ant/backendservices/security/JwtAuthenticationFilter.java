@@ -53,6 +53,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 jwt = tokenProvider.generateToken(authentication);
                 Cookie authCookie = new Cookie("JwtToken", jwt);
                 authCookie.setPath("/");
+                authCookie.setHttpOnly(true);
                 response.addCookie(authCookie);
             }
         } catch (Exception ex) {

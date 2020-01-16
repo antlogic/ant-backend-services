@@ -38,9 +38,13 @@ public class LoggingFilter implements Filter {
 
     void setHeaders(HttpServletRequest request) {
         apiContext.setRequestStartTime(Instant.now());
-        apiContext.setUserId(request.getHeader(ServiceConstants.USER_ID));
+        String userId = request.getHeader(ServiceConstants.USER_ID);
+        if (StringUtils.isEmpty(userId)) {
+            userId = "ANON";
+        }
+        apiContext.setUserId(userId);
         String requestId = request.getHeader(ServiceConstants.REQUEST_ID);
-        if (StringUtils.isEmpty(request)) {
+        if (StringUtils.isEmpty(requestId)) {
             requestId = UUID.randomUUID().toString();
         }
         apiContext.setRequestId(requestId);

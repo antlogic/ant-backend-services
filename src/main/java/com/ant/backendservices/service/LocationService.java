@@ -1,5 +1,6 @@
 package com.ant.backendservices.service;
 
+import com.ant.backendservices.error.Error;
 import com.ant.backendservices.exception.AppException;
 import com.ant.backendservices.model.Company;
 import com.ant.backendservices.model.Location;
@@ -9,6 +10,8 @@ import com.ant.backendservices.transformer.LocationTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class LocationService {
@@ -32,11 +35,16 @@ public class LocationService {
         Company company = companyService.getCompanyById(companyId);
 
         if (company == null) {
-            throw new AppException("Invalid companyId {}" + companyId + ".");
+            throw new AppException(Error.INTERNAL_SERVER_ERROR, "Invalid companyId {}" + companyId + ".");
         }
 
         Location location = locationTransformer.createLocationRequestToLocationEntity(createLocationRequest, company);
 
         return locationRepository.save(location);
+    }
+
+    @Transactional
+    public List<Location> getLocations(Long companyId) {
+        return locationRepository.findByCompanyId(companyId).orElse(null);
     }
 }

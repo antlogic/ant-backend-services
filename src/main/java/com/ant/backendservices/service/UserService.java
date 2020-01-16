@@ -1,5 +1,6 @@
 package com.ant.backendservices.service;
 
+import com.ant.backendservices.error.Error;
 import com.ant.backendservices.exception.BadRequestException;
 import com.ant.backendservices.model.Company;
 import com.ant.backendservices.model.RoleName;
@@ -46,17 +47,17 @@ public class UserService {
     @Transactional
     public User registerNewUser(SignUpRequest signUpRequest) {
         if(userRepository.existsByUsername(signUpRequest.getUsername())) {
-            throw new BadRequestException("Username already taken.");
+            throw new BadRequestException(Error.VALIDATION_ERROR, "Username already taken.");
         }
 
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new BadRequestException("Email address already in use.");
+            throw new BadRequestException(Error.VALIDATION_ERROR, "Email address already in use.");
         }
 
         Company company = companyTransformer.signUpRequestToCompanyEntity(signUpRequest);
 
         if (company == null) {
-            throw new BadRequestException("Company information not provided. Company information required for user registration.");
+            throw new BadRequestException(Error.VALIDATION_ERROR, "Company information not provided. Company information required for user registration.");
         }
 
 
@@ -64,7 +65,7 @@ public class UserService {
             // Verify company for existing enrollment
             Company dbCompany = companyService.getCompanyById(company.getId());
             if (dbCompany == null) {
-                throw new BadRequestException("Company Id" + company.getId() + "is invalid. Please provide a valid companyId or provide null value for companyId.");
+                throw new BadRequestException(Error.VALIDATION_ERROR, "Company Id" + company.getId() + "is invalid. Please provide a valid companyId or provide null value for companyId.");
             }
             company = dbCompany;
         } else {

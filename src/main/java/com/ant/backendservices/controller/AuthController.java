@@ -30,7 +30,7 @@ import java.net.URI;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/v1/auth")
 public class AuthController {
 
     @Autowired
@@ -65,6 +65,7 @@ public class AuthController {
         String jwt = tokenProvider.generateToken(authentication);
         Cookie authCookie = new Cookie("JwtToken", jwt);
         authCookie.setPath("/");
+        authCookie.setHttpOnly(true);
         response.addCookie(authCookie);
 
         JwtAuthenticationResponse jwtResponse = new JwtAuthenticationResponse();
