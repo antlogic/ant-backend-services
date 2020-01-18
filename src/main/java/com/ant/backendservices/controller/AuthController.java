@@ -4,26 +4,20 @@ import com.ant.backendservices.model.User;
 import com.ant.backendservices.payload.request.auth.LoginRequest;
 import com.ant.backendservices.payload.request.auth.SignUpRequest;
 import com.ant.backendservices.payload.response.RegisterResponse;
-import com.ant.backendservices.payload.response.InvalidCredentialsResponse;
 import com.ant.backendservices.payload.response.JwtAuthenticationResponse;
 import com.ant.backendservices.security.JwtTokenProvider;
+import com.ant.backendservices.service.AuthService;
 import com.ant.backendservices.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
@@ -34,10 +28,10 @@ import java.net.URI;
 public class AuthController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    private AuthService authService;
 
     @Autowired
     private JwtTokenProvider tokenProvider;
@@ -45,29 +39,9 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
 
-        Authentication authentication;
-        try {
-            authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getUsernameOrEmail().toLowerCase(),
-                            loginRequest.getPassword()
-                    )
-            );
-        } catch (BadCredentialsException ex) {
-            log.error("Invalid credentials for user/email: {}", loginRequest.getUsernameOrEmail());
-            InvalidCredentialsResponse invalidCredentialsResponse = new InvalidCredentialsResponse();
-            invalidCredentialsResponse.setMessage("Invalid credentials for user/email: " + loginRequest.getUsernameOrEmail());
-            return new ResponseEntity<>(invalidCredentialsResponse, HttpStatus.NOT_FOUND);
-        }
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Authentication authentication = authService.signIn(loginRequest.getUsernameOrEmail(), loginRequest.getPassword());
 
         String jwt = tokenProvider.generateToken(authentication);
-        Cookie authCookie = new Cookie("JwtToken", jwt);
-        authCookie.setPath("/");
-        authCookie.setHttpOnly(true);
-        response.addCookie(authCookie);
-
         JwtAuthenticationResponse jwtResponse = new JwtAuthenticationResponse();
         jwtResponse.setAccessToken(jwt);
 

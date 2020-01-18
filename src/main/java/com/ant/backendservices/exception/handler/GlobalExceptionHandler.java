@@ -1,6 +1,7 @@
 package com.ant.backendservices.exception.handler;
 
 import com.ant.backendservices.exception.AppException;
+import com.ant.backendservices.exception.AuthorizationException;
 import com.ant.backendservices.exception.BadRequestException;
 import com.ant.backendservices.payload.response.ErrorResponse;
 import com.ant.backendservices.transformer.ErrorTransformer;
@@ -32,11 +33,22 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = BadRequestException.class)
     @ResponseBody
-    public ResponseEntity<ErrorResponse> handleAppException(HttpServletRequest request, BadRequestException e) {
+    public ResponseEntity<ErrorResponse> handleBadRequestException(HttpServletRequest request, BadRequestException e) {
         ErrorResponse response = errorTransformer.errorListToErrorResponse(e.getError());
         HttpStatus status = HttpStatus.BAD_REQUEST;
         if (response != null) {
             status = e.getError().getErrorCategory() != null ? e.getError().getErrorCategory().getHttpStatus() : HttpStatus.BAD_REQUEST;
+        }
+        return new ResponseEntity<>(response, status);
+    }
+
+    @ExceptionHandler(value = AuthorizationException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorResponse> handleAuthorizationException(HttpServletRequest request, AuthorizationException e) {
+        ErrorResponse response = errorTransformer.errorListToErrorResponse(e.getError());
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        if (response != null) {
+            status = e.getError().getErrorCategory() != null ? e.getError().getErrorCategory().getHttpStatus() : HttpStatus.UNAUTHORIZED;
         }
         return new ResponseEntity<>(response, status);
     }

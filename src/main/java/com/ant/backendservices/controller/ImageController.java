@@ -6,6 +6,7 @@ import com.ant.backendservices.payload.response.RetrieveImagesResponse;
 import com.ant.backendservices.service.AuthService;
 import com.ant.backendservices.service.ImageService;
 import com.ant.backendservices.transformer.ImageTransformer;
+import com.ant.backendservices.utils.StorageBucketUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

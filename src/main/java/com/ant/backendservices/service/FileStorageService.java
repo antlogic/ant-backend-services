@@ -1,5 +1,7 @@
 package com.ant.backendservices.service;
 
+import com.ant.backendservices.error.Error;
+import com.ant.backendservices.exception.AppException;
 import com.ant.backendservices.exception.FileStorageException;
 import com.ant.backendservices.repository.FileStorageRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -15,12 +17,6 @@ import java.util.Collections;
 @Service
 public class FileStorageService {
 
-    @Value("${app.awsServices.bucketName}")
-    private static String bucketName;
-
-    @Value("${cloud.aws.region.static}")
-    private static String region;
-
     @Autowired
     private FileStorageRepository fileStorageRepository;
 
@@ -31,12 +27,9 @@ public class FileStorageService {
         try {
             return fileStorageRepository.uploadFile(file);
         } catch (Exception ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+            log.error("Could not store file {}. Please try again!", fileName, ex);
+            throw new AppException(Error.INTERNAL_SERVER_ERROR, "Could not store file " + fileName + ". Please try again!", ex);
         }
-    }
-
-    public static String createBucketFileURL(String fileName) {
-        return "https://" + bucketName + ".s3." + region + ".amazonaws.com/" + fileName;
     }
 
 //    public Resource loadFileAsResource(String fileName) {
