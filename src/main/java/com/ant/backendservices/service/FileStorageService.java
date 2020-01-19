@@ -17,15 +17,25 @@ import java.util.Collections;
 @Service
 public class FileStorageService {
 
+    @Value("${app.awsServices.bucketName}")
+    private String bucketName;
+
+    @Value("${cloud.aws.region.static}")
+    private String region;
+
     @Autowired
     private FileStorageRepository fileStorageRepository;
+
+    private String getFileURL(String fileName) {
+        return "https://" + bucketName + ".s3." + region + ".amazonaws.com/" + fileName;
+    }
 
     public String storeFile(MultipartFile file) {
         // Normalize file name
         String fileName = file.getOriginalFilename();
 
         try {
-            return fileStorageRepository.uploadFile(file);
+            return getFileURL(fileStorageRepository.uploadFile(file));
         } catch (Exception ex) {
             log.error("Could not store file {}. Please try again!", fileName, ex);
             throw new AppException(Error.INTERNAL_SERVER_ERROR, "Could not store file " + fileName + ". Please try again!", ex);

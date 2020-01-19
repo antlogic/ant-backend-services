@@ -14,7 +14,8 @@ import java.util.List;
 public interface ImageTransformer {
 
     @Mappings({
-            @Mapping(target = "fileId", source = "id")
+            @Mapping(target = "imageId", source = "id"),
+            @Mapping(target = "url", source = "fileName")
     })
     ImageType imageEntityToImageType(Image image);
 

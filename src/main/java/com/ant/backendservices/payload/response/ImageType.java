@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class ImageType {
-    private String fileId;
-    private String fileName;
+    private String imageId;
+    private String url;
     private Long height;
     private Long width;
     // Size in bytes
