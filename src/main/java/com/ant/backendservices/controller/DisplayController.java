@@ -1,5 +1,6 @@
 package com.ant.backendservices.controller;
 
+import com.ant.backendservices.bo.DisplayBO;
 import com.ant.backendservices.model.Display;
 import com.ant.backendservices.payload.request.display.RegisterDisplayRequest;
 import com.ant.backendservices.payload.response.RegisterResponse;
@@ -37,23 +38,18 @@ public class DisplayController {
 
     @PostMapping()
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<RegisterResponse> registerNewDisplay(@PathVariable ("locationId") Long locationId, @Valid @RequestBody RegisterDisplayRequest registerDisplayRequest) {
+    public ResponseEntity<RetrieveDisplaysResponse> registerNewDisplay(@PathVariable ("locationId") Long locationId, @Valid @RequestBody RegisterDisplayRequest registerDisplayRequest) {
         displayRequestValidator.validate(registerDisplayRequest);
         Long companyId = authService.getLoggedInCompanyId();
-        Display display = displayService.createDisplay(registerDisplayRequest, companyId, locationId);
-
-        if (display == null) {
-            return new ResponseEntity<>(new RegisterResponse(false, "Display registration failed."), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return new ResponseEntity<>(new RegisterResponse(true, "Display registered successfully."), HttpStatus.OK);
+        displayService.createDisplay(registerDisplayRequest, companyId, locationId);
+        return getDisplays(locationId);
     }
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<RetrieveDisplaysResponse> getDisplays(@PathVariable ("locationId") Long locationId) {
         Long companyId = authService.getLoggedInCompanyId();
-        List<Display> displays = displayService.getDisplays(companyId, locationId);
+        List<DisplayBO> displays = displayService.getDisplays(companyId, locationId);
         RetrieveDisplaysResponse response = displayTransformer.displayEntityListToRetrieveDisplaysResponse(displays);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

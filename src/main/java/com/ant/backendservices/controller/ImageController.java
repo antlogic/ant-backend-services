@@ -33,16 +33,10 @@ public class ImageController {
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<RegisterResponse> uploadImage(@RequestParam("file")MultipartFile file) {
+    public ResponseEntity<RetrieveImagesResponse> uploadImage(@RequestParam("file")MultipartFile file) {
         Long companyId = authService.getLoggedInCompanyId();
-        Image image = imageService.uploadImage(file, companyId);
-
-        if (image == null) {
-            return new ResponseEntity<>(new RegisterResponse(false, "Image upload failed."), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return new ResponseEntity<>(new RegisterResponse(true, "Image uploaded successfully."), HttpStatus.OK);
-
+        imageService.uploadImage(file, companyId);
+        return getImages();
     }
 
     @GetMapping

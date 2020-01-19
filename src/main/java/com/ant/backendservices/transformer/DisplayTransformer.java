@@ -1,5 +1,6 @@
 package com.ant.backendservices.transformer;
 
+import com.ant.backendservices.bo.DisplayBO;
 import com.ant.backendservices.model.Company;
 import com.ant.backendservices.model.Display;
 import com.ant.backendservices.model.Location;
@@ -31,16 +32,22 @@ public interface DisplayTransformer {
     Display registerDisplayRequestToDisplayEntity(RegisterDisplayRequest registerDisplayRequest, Location location, Company company);
 
     @Mappings({
-            @Mapping(target = "displayId", source = "id"),
-            @Mapping(target = "locationId", source = "location.id")
+            @Mapping(target = "displayId", source = "displayId"),
+            @Mapping(target = "locationId", source = "locationId")
     })
-    DisplayType displayEntityToDisplayType(Display display);
+    DisplayType displayEntityToDisplayType(DisplayBO display);
 
-    List<DisplayType> displayEntityListToDisplayTypeList(List<Display> displays);
+    List<DisplayType> displayEntityListToDisplayTypeList(List<DisplayBO> displays);
 
-    default RetrieveDisplaysResponse displayEntityListToRetrieveDisplaysResponse(List<Display> displays) {
+    default RetrieveDisplaysResponse displayEntityListToRetrieveDisplaysResponse(List<DisplayBO> displays) {
         RetrieveDisplaysResponse response = new RetrieveDisplaysResponse();
         response.setDisplays(displayEntityListToDisplayTypeList(displays));
         return response;
     }
+
+    @Mappings({
+            @Mapping(target = "displayId", source = "id"),
+            @Mapping(target = "locationId", source = "location.id")
+    })
+    DisplayBO displayEntityToDisplayBO(Display display);
 }

@@ -1,20 +1,24 @@
-package com.ant.backendservices.payload.response;
+package com.ant.backendservices.bo;
 
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class LocationType {
+public class DisplayBO {
+    private Long displayId;
+
     private Long locationId;
 
     private String name;
 
-    private String address;
+    private String description;
 
-    private Long phoneNumber;
+    private Long transitionTimeMillis;
 
-    private Integer numberOfDisplays;
+    private String orientation;
+
+    private Integer numberOfSlides;
 
     private Date createdAt;
 

@@ -42,16 +42,10 @@ public class SlideController {
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<RegisterResponse> createSlide(@Valid @RequestBody CreateSlideRequest createSlideRequest, @PathVariable Long locationId, @PathVariable Long displayId) {
+    public ResponseEntity<RetrieveSlidesResponse> createSlide(@Valid @RequestBody CreateSlideRequest createSlideRequest, @PathVariable Long locationId, @PathVariable Long displayId) {
         Long companyId = authService.getLoggedInCompanyId();
-        Slide slide = slideService.createSlide(createSlideRequest, companyId, locationId, displayId);
-
-        if (slide == null) {
-            return new ResponseEntity<>(new RegisterResponse(false, "Slide creation failed."), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return new ResponseEntity<>(new RegisterResponse(true, "Slide created successfully."), HttpStatus.OK);
-
+        slideService.createSlide(createSlideRequest, companyId, locationId, displayId);
+        return getSlides(locationId, displayId);
     }
 
 

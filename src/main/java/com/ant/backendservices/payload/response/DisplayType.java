@@ -19,6 +19,8 @@ public class DisplayType {
 
     private String orientation;
 
+    private Integer numberOfSlides;
+
     private Date createdAt;
 
     private String createdBy;
