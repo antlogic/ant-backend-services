@@ -1,5 +1,6 @@
 package com.ant.backendservices.controller;
 
+import com.ant.backendservices.bo.LocationBO;
 import com.ant.backendservices.model.Location;
 import com.ant.backendservices.payload.request.location.CreateLocationRequest;
 import com.ant.backendservices.payload.response.RegisterResponse;
@@ -33,22 +34,17 @@ public class LocationController {
 
     @PostMapping()
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<RegisterResponse> createLocation(@Valid @RequestBody CreateLocationRequest createLocationRequest) {
+    public ResponseEntity<RetrieveLocationsResponse> createLocation(@Valid @RequestBody CreateLocationRequest createLocationRequest) {
         Long companyId = authService.getLoggedInCompanyId();
-        Location location = locationService.createLocation(createLocationRequest, companyId);
-
-        if (location == null) {
-            return new ResponseEntity<>(new RegisterResponse(false, "Location creation failed."), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return new ResponseEntity<>(new RegisterResponse(true, "Location created successfully."), HttpStatus.OK);
+        locationService.createLocation(createLocationRequest, companyId);
+        return getLocations();
     }
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<RetrieveLocationsResponse> getLocations() {
         Long companyId = authService.getLoggedInCompanyId();
-        List<Location> locations = locationService.getLocations(companyId);
+        List<LocationBO> locations = locationService.getLocations(companyId);
         RetrieveLocationsResponse response = locationTransformer.locationEntityListToRetrieveLocationsResponse(locations);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

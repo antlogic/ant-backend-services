@@ -1,5 +1,6 @@
 package com.ant.backendservices.transformer;
 
+import com.ant.backendservices.bo.DisplayBO;
 import com.ant.backendservices.model.Company;
 import com.ant.backendservices.model.Display;
 import com.ant.backendservices.model.Location;
@@ -15,32 +16,39 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface DisplayTransformer {
 
-    @Mappings({
-            @Mapping(target = "name", source = "registerDisplayRequest.name"),
-            @Mapping(target = "description", source = "registerDisplayRequest.description"),
-            @Mapping(target = "orientation", source = "registerDisplayRequest.orientation"),
-            @Mapping(target = "transitionTimeMillis", source = "registerDisplayRequest.transitionTimeMillis"),
-            @Mapping(target = "location", source = "location"),
-            @Mapping(target = "company", source = "company"),
-            @Mapping(target = "id", ignore = true),
-            @Mapping(target = "createdAt", ignore = true),
-            @Mapping(target = "updatedAt", ignore = true),
-            @Mapping(target = "createdBy", ignore = true),
-            @Mapping(target = "updatedBy", ignore = true)
-    })
-    Display registerDisplayRequestToDisplayEntity(RegisterDisplayRequest registerDisplayRequest, Location location, Company company);
+//    @Mappings({
+//            @Mapping(target = "name", source = "registerDisplayRequest.name"),
+//            @Mapping(target = "description", source = "registerDisplayRequest.description"),
+//            @Mapping(target = "orientation", source = "registerDisplayRequest.orientation"),
+//            @Mapping(target = "transitionTimeMillis", source = "registerDisplayRequest.transitionTimeMillis"),
+//            @Mapping(target = "location", source = "location"),
+//            @Mapping(target = "company", source = "company"),
+//            @Mapping(target = "id", ignore = true),
+//            @Mapping(target = "createdAt", ignore = true),
+//            @Mapping(target = "updatedAt", ignore = true),
+//            @Mapping(target = "createdBy", ignore = true),
+//            @Mapping(target = "updatedBy", ignore = true)
+//    })
+//    Display registerDisplayRequestToDisplayEntity(RegisterDisplayRequest registerDisplayRequest, Location location, Company company);
 
     @Mappings({
-            @Mapping(target = "displayId", source = "id"),
-            @Mapping(target = "locationId", source = "location.id")
+            @Mapping(target = "displayId", source = "displayId"),
+            @Mapping(target = "locationId", source = "locationId")
     })
-    DisplayType displayEntityToDisplayType(Display display);
+    DisplayType displayEntityToDisplayType(DisplayBO display);
 
-    List<DisplayType> displayEntityListToDisplayTypeList(List<Display> displays);
+    List<DisplayType> displayEntityListToDisplayTypeList(List<DisplayBO> displays);
 
-    default RetrieveDisplaysResponse displayEntityListToRetrieveDisplaysResponse(List<Display> displays) {
+    default RetrieveDisplaysResponse displayEntityListToRetrieveDisplaysResponse(List<DisplayBO> displays) {
         RetrieveDisplaysResponse response = new RetrieveDisplaysResponse();
         response.setDisplays(displayEntityListToDisplayTypeList(displays));
         return response;
     }
+
+    @Mappings({
+            @Mapping(target = "displayId", source = "id"),
+            @Mapping(target = "locationId", source = "location.id"),
+            @Mapping(target = "numberOfSlides", ignore = true)
+    })
+    DisplayBO displayEntityToDisplayBO(Display display);
 }

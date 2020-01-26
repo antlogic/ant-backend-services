@@ -2,12 +2,16 @@ package com.ant.backendservices.model;
 
 import com.ant.backendservices.model.audit.UserDateAudit;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "displays")
+@Table(name = "displays", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "device_id")
+})
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class Display extends UserDateAudit {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -22,12 +26,18 @@ public class Display extends UserDateAudit {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
+    @Column(name = "device_id", nullable = false, length = 40)
+    private String deviceId;
+
     @Column(name = "description", length = 250)
     private String description;
 
-    @Column(name = "transition_time_millis", nullable = false)
-    private Long transitionTimeMillis;
+    @Column(name = "model", nullable = false, length = 100)
+    private String model;
 
-    @Column(name = "orientation", nullable = false)
-    private String orientation;
+    @Column(name = "manufacturer", nullable = false, length = 100)
+    private String manufacturer;
+
+    @Column(name = "is_landscape", nullable = false)
+    private Boolean isLandscape;
 }

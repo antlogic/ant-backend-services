@@ -12,14 +12,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -50,11 +45,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                jwt = tokenProvider.generateToken(authentication);
-                Cookie authCookie = new Cookie("JwtToken", jwt);
-                authCookie.setPath("/");
-                authCookie.setHttpOnly(true);
-                response.addCookie(authCookie);
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
@@ -64,19 +54,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
-        Map<String, String> cookieMap = readAllCookies(request);
-        String jwtToken = cookieMap.get("JwtToken");
-        return StringUtils.hasText(jwtToken) ? jwtToken : null;
-    }
-
-    private Map<String, String> readAllCookies(HttpServletRequest request) {
-        Map<String, String> cookieMap = new HashMap<>();
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            Arrays.stream(cookies).forEach(cookie -> {
-                cookieMap.put(cookie.getName(), cookie.getValue());
-            });
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7, bearerToken.length());
         }
-        return cookieMap;
+        return null;
     }
 }

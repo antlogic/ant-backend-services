@@ -1,5 +1,6 @@
 package com.ant.backendservices.transformer;
 
+import com.ant.backendservices.bo.LocationBO;
 import com.ant.backendservices.model.Company;
 import com.ant.backendservices.model.Location;
 import com.ant.backendservices.payload.request.location.CreateLocationRequest;
@@ -28,15 +29,20 @@ public interface LocationTransformer {
     Location createLocationRequestToLocationEntity(CreateLocationRequest createLocationRequest, Company company);
 
     @Mappings({
-            @Mapping(target = "locationId", source = "id")
+            @Mapping(target = "locationId", source = "locationId")
     })
-    LocationType locationEntityToLocationType(Location location);
+    LocationType locationEntityToLocationType(LocationBO location);
 
-    List<LocationType> locationEntityListToLocationTypeList(List<Location> locations);
+    List<LocationType> locationEntityListToLocationTypeList(List<LocationBO> locations);
 
-    default RetrieveLocationsResponse locationEntityListToRetrieveLocationsResponse(List<Location> locations) {
+    default RetrieveLocationsResponse locationEntityListToRetrieveLocationsResponse(List<LocationBO> locations) {
         RetrieveLocationsResponse response = new RetrieveLocationsResponse();
         response.setLocations(locationEntityListToLocationTypeList(locations));
         return response;
     }
+
+    @Mappings({
+            @Mapping(target = "locationId", source = "id")
+    })
+    LocationBO locationEntityToLocationBO(Location location);
 }

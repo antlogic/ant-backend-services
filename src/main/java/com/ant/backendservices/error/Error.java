@@ -11,6 +11,7 @@ public enum Error {
     AUTHORIZATION_ERROR(101, ErrorCategory.AUTHORIZATION_ERROR, "Unauthorized access. Please provide valid credentials."),
     VALIDATION_ERROR(102, ErrorCategory.VALIDATION_ERROR, "Invalid request. Please refer to /v2/api-docs."),
     INTERNAL_SERVER_ERROR(103, ErrorCategory.INTERNAL_SERVER_ERROR, "An Internal Server Error occurred. Please try again later. If issue persists, please contact engineering team."),
+    INVALID_PAIR_CODE(104, ErrorCategory.BAD_REQUEST, "Invalid Pair Code. Pair code does not exist."),
     ;
 
     private Integer errorCode;

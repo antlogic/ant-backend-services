@@ -1,12 +1,11 @@
-package com.ant.backendservices.payload.response;
+package com.ant.backendservices.bo;
 
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class DisplayType {
-
+public class DisplayBO {
     private Long displayId;
 
     private Long locationId;
@@ -30,5 +29,4 @@ public class DisplayType {
     private Date updatedAt;
 
     private String updatedBy;
-
 }

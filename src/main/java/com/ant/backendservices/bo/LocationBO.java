@@ -1,11 +1,12 @@
-package com.ant.backendservices.payload.response;
+package com.ant.backendservices.bo;
 
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class LocationType {
+public class LocationBO {
+
     private Long locationId;
 
     private String name;
@@ -23,4 +24,5 @@ public class LocationType {
     private Date updatedAt;
 
     private String updatedBy;
+
 }

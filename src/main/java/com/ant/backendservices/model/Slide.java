@@ -33,4 +33,7 @@ public class Slide extends UserDateAudit {
     @Column(name = "type", nullable = false, length = 50)
     private String type;
 
+    @Column(name = "transition_time_millis", nullable = false)
+    private Long transitionTimeMillis;
+
 }

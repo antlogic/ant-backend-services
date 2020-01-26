@@ -16,6 +16,7 @@ public interface SlideTransformer {
     @Mappings({
             @Mapping(target = "name", source = "createSlideRequest.name"),
             @Mapping(target = "type", source = "createSlideRequest.type"),
+            @Mapping(target = "transitionTimeMillis", source = "createSlideRequest.transitionTimeMillis", defaultExpression = "java(1000L)"),
             @Mapping(target = "display", source = "display"),
             @Mapping(target = "location", source = "location"),
             @Mapping(target = "company", source = "company"),
