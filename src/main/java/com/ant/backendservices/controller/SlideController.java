@@ -2,7 +2,6 @@ package com.ant.backendservices.controller;
 
 import com.ant.backendservices.model.Slide;
 import com.ant.backendservices.payload.request.slide.CreateSlideRequest;
-import com.ant.backendservices.payload.response.RegisterResponse;
 import com.ant.backendservices.payload.response.RetrieveSlidesResponse;
 import com.ant.backendservices.service.AuthService;
 import com.ant.backendservices.service.SlideService;

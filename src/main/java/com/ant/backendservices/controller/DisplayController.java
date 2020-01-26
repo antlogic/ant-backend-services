@@ -1,14 +1,12 @@
 package com.ant.backendservices.controller;
 
 import com.ant.backendservices.bo.DisplayBO;
-import com.ant.backendservices.model.Display;
 import com.ant.backendservices.payload.request.display.RegisterDisplayRequest;
-import com.ant.backendservices.payload.response.RegisterResponse;
 import com.ant.backendservices.payload.response.RetrieveDisplaysResponse;
 import com.ant.backendservices.service.AuthService;
 import com.ant.backendservices.service.DisplayService;
+import com.ant.backendservices.service.PairDeviceService;
 import com.ant.backendservices.transformer.DisplayTransformer;
-import com.ant.backendservices.validator.DisplayRequestValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,17 +29,15 @@ public class DisplayController {
     private DisplayTransformer displayTransformer;
 
     @Autowired
-    private AuthService authService;
+    private PairDeviceService pairDeviceService;
 
     @Autowired
-    private DisplayRequestValidator displayRequestValidator;
+    private AuthService authService;
 
-    @PostMapping()
+    @PostMapping("/link")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<RetrieveDisplaysResponse> registerNewDisplay(@PathVariable ("locationId") Long locationId, @Valid @RequestBody RegisterDisplayRequest registerDisplayRequest) {
-        displayRequestValidator.validate(registerDisplayRequest);
-        Long companyId = authService.getLoggedInCompanyId();
-        displayService.createDisplay(registerDisplayRequest, companyId, locationId);
+        pairDeviceService.pairDeviceToDisplay(registerDisplayRequest, locationId);
         return getDisplays(locationId);
     }
 

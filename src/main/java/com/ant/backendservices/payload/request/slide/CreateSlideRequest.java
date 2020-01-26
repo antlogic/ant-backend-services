@@ -17,4 +17,6 @@ public class CreateSlideRequest {
 
     private Long imageId;
 
+    private Long transitionTimeMillis;
+
 }

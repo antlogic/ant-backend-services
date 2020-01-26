@@ -25,7 +25,7 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public String getLoggedInUser() {
+    public String getLoggedInUsername() {
         String username = null;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
@@ -35,8 +35,20 @@ public class AuthService {
     }
 
     @Transactional
+    public Long getLoggedInUserId() {
+        String username = getLoggedInUsername();
+        User user = userRepository.findByUsername(username).orElse(null);
+
+        if (user == null) {
+            return null;
+        }
+
+        return user.getId();
+    }
+
+    @Transactional
     public Long getLoggedInCompanyId() {
-        String username = getLoggedInUser();
+        String username = getLoggedInUsername();
         User user = userRepository.findByUsername(username).orElse(null);
 
         if (user == null) {
@@ -44,6 +56,12 @@ public class AuthService {
         }
 
         return user.getCompany() != null ? user.getCompany().getId() : null;
+    }
+
+    @Transactional
+    public User getLoggedInUser() {
+        String username = getLoggedInUsername();
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     public Authentication signIn(String usernameOrEmail, String password) {

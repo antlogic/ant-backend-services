@@ -1,5 +1,6 @@
 package com.ant.backendservices.controller;
 
+import com.ant.backendservices.bo.UserBO;
 import com.ant.backendservices.model.User;
 import com.ant.backendservices.payload.request.auth.LoginRequest;
 import com.ant.backendservices.payload.request.auth.SignUpRequest;
@@ -10,6 +11,7 @@ import com.ant.backendservices.service.AuthService;
 import com.ant.backendservices.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,9 @@ import java.net.URI;
 @RequestMapping("/v1/auth")
 public class AuthController {
 
+    @Value("${app.jwtExpirationInMs}")
+    private Long jwtExpiry;
+
     @Autowired
     private UserService userService;
 
@@ -37,13 +42,17 @@ public class AuthController {
     private JwtTokenProvider tokenProvider;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+    public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
 
         Authentication authentication = authService.signIn(loginRequest.getUsernameOrEmail(), loginRequest.getPassword());
+        UserBO user = userService.getUser(loginRequest.getUsernameOrEmail());
 
         String jwt = tokenProvider.generateToken(authentication);
         JwtAuthenticationResponse jwtResponse = new JwtAuthenticationResponse();
         jwtResponse.setAccessToken(jwt);
+        jwtResponse.setAccessTokenExpiry(jwtExpiry);
+        jwtResponse.setFirstName(user.getFirstName());
+        jwtResponse.setLastName(user.getLastName());
 
         return ResponseEntity.ok(jwtResponse);
     }

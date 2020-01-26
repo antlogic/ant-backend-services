@@ -8,7 +8,8 @@ public enum ErrorCategory {
 
     VALIDATION_ERROR("Invalid request.", HttpStatus.BAD_REQUEST),
     AUTHORIZATION_ERROR("Invalid credentials.", HttpStatus.UNAUTHORIZED),
-    INTERNAL_SERVER_ERROR("Internal server error.", HttpStatus.INTERNAL_SERVER_ERROR);
+    INTERNAL_SERVER_ERROR("Internal server error.", HttpStatus.INTERNAL_SERVER_ERROR),
+    BAD_REQUEST("Bad request.", HttpStatus.BAD_REQUEST);
 
     private String message;
     private HttpStatus httpStatus;

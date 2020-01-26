@@ -15,9 +15,11 @@ public class DisplayType {
 
     private String description;
 
-    private Long transitionTimeMillis;
+    private String model;
 
-    private String orientation;
+    private String manufacturer;
+
+    private Boolean isLandscape;
 
     private Integer numberOfSlides;
 

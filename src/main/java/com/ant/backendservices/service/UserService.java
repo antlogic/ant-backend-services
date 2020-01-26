@@ -1,5 +1,6 @@
 package com.ant.backendservices.service;
 
+import com.ant.backendservices.bo.UserBO;
 import com.ant.backendservices.error.Error;
 import com.ant.backendservices.exception.BadRequestException;
 import com.ant.backendservices.model.Company;
@@ -42,7 +43,11 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
+    @Transactional
+    public UserBO getUser(String usernameOrEmail) {
+        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail).orElse(null);
+        return userTransformer.userEntityToUserBO(user);
+    }
 
     @Transactional
     public User registerNewUser(SignUpRequest signUpRequest) {

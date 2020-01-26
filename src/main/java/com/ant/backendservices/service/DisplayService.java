@@ -35,24 +35,24 @@ public class DisplayService {
     @Autowired
     private DisplayTransformer displayTransformer;
 
-    @Transactional
-    public Display createDisplay(RegisterDisplayRequest registerDisplayRequest, Long companyId, Long locationId) {
-        Company company = companyService.getCompanyById(companyId);
-
-        if (company == null) {
-            throw new AppException(Error.INTERNAL_SERVER_ERROR, "Invalid companyId {}" + companyId + ".");
-        }
-
-        Location location = locationService.getLocationById(locationId);
-
-        if (location == null) {
-            throw new AppException(Error.INTERNAL_SERVER_ERROR, "Invalid locationId {}" + locationId + ".");
-        }
-
-        Display display = displayTransformer.registerDisplayRequestToDisplayEntity(registerDisplayRequest, location, company);
-
-        return displayRepository.save(display);
-    }
+//    @Transactional
+//    public Display createDisplay(RegisterDisplayRequest registerDisplayRequest, Long companyId, Long locationId) {
+//        Company company = companyService.getCompanyById(companyId);
+//
+//        if (company == null) {
+//            throw new AppException(Error.INTERNAL_SERVER_ERROR, "Invalid companyId {}" + companyId + ".");
+//        }
+//
+//        Location location = locationService.getLocationById(locationId);
+//
+//        if (location == null) {
+//            throw new AppException(Error.INTERNAL_SERVER_ERROR, "Invalid locationId {}" + locationId + ".");
+//        }
+//
+//        Display display = displayTransformer.registerDisplayRequestToDisplayEntity(registerDisplayRequest, location, company);
+//
+//        return displayRepository.save(display);
+//    }
 
     public Display getDisplayById(Long id) {
         return displayRepository.findById(id).orElse(null);

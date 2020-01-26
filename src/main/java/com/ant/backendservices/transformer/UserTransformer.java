@@ -1,5 +1,6 @@
 package com.ant.backendservices.transformer;
 
+import com.ant.backendservices.bo.UserBO;
 import com.ant.backendservices.model.Company;
 import com.ant.backendservices.model.Role;
 import com.ant.backendservices.model.User;
@@ -28,4 +29,6 @@ public interface UserTransformer {
             @Mapping(target = "updatedAt", ignore = true)
     })
     User signUpRequestToUserEntity(SignUpRequest signUpRequest, Company company, PasswordEncoder passwordEncoder, Set<Role> roleSet);
+
+    UserBO userEntityToUserBO(User user);
 }

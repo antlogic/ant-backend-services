@@ -35,6 +35,14 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String generateDisplayDeviceToken(Long userId) {
+        return Jwts.builder()
+                .setSubject(Long.toString(userId))
+                .setIssuedAt(new Date())
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
+    }
+
     public Long getUserIdFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
