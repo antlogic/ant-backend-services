@@ -18,7 +18,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/v1/locations/{locationId}/displays/{displayId}/slides")
+@RequestMapping("/v1")
 public class SlideController {
 
     @Autowired
@@ -30,22 +30,44 @@ public class SlideController {
     @Autowired
     private AuthService authService;
 
-    @GetMapping
+    @GetMapping("/locations/{locationId}/displays/{displayId}/slides")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<RetrieveSlidesResponse> getSlides(@PathVariable Long locationId, @PathVariable Long displayId) {
+    public ResponseEntity<RetrieveSlidesResponse> getSpecificSlides(@PathVariable Long locationId, @PathVariable Long displayId) {
         Long companyId = authService.getLoggedInCompanyId();
-        List<Slide> slides = slideService.getSlidesByCompanyId(companyId, locationId, displayId);
+        List<Slide> slides = slideService.getSlidesByCompanyIdLocationIdDisplayId(companyId, locationId, displayId);
         RetrieveSlidesResponse response = slideTransformer.slideEntityListToRetrieveSlidesResponse(slides);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/locations/{locationId}/displays/{displayId}/slides")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<RetrieveSlidesResponse> createSlide(@Valid @RequestBody CreateSlideRequest createSlideRequest, @PathVariable Long locationId, @PathVariable Long displayId) {
         Long companyId = authService.getLoggedInCompanyId();
-        slideService.createSlide(createSlideRequest, companyId, locationId, displayId);
-        return getSlides(locationId, displayId);
+        slideService.createSpecificSlide(createSlideRequest, companyId, locationId, displayId);
+        return getSpecificSlides(locationId, displayId);
     }
 
+    @GetMapping("/slides")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<RetrieveSlidesResponse> getCompanySlides() {
+        Long companyId = authService.getLoggedInCompanyId();
+        List<Slide> slides = slideService.getSlidesByCompanyId(companyId);
+        RetrieveSlidesResponse response = slideTransformer.slideEntityListToRetrieveSlidesResponse(slides);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
+    @PostMapping("/slides")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<RetrieveSlidesResponse> createCompanySlides(@Valid @RequestBody CreateSlideRequest createSlideRequest) {
+        Long companyId = authService.getLoggedInCompanyId();
+        slideService.createCompanySlide(createSlideRequest, companyId);
+        return getCompanySlides();
+    }
+
+    @PatchMapping("/locations/{locationId}/displays/{displayId}/slides/{slideId}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<RetrieveSlidesResponse> updateSlide(@Valid @RequestBody CreateSlideRequest createSlideRequest, @PathVariable String locationId, @PathVariable String displayId, @PathVariable String slideId) {
+        Long companyId = authService.getLoggedInCompanyId();
+        
+    }
 }

@@ -12,6 +12,7 @@ public class SlideType {
     private String name;
     private String type;
     private ImageType image;
+    private Long transitionTimeMillis;
     private Date createdAt;
     private String createdBy;
     private Date updatedAt;

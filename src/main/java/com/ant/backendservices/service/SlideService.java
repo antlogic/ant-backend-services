@@ -33,12 +33,16 @@ public class SlideService {
     @Autowired
     private SlideTransformer slideTransformer;
 
-    public List<Slide> getSlidesByCompanyId(Long companyId, Long locationId, Long displayId) {
+    public List<Slide> getSlidesByCompanyIdLocationIdDisplayId(Long companyId, Long locationId, Long displayId) {
         return slideRepository.findByCompanyIdAndLocationIdAndDisplayId(companyId, locationId, displayId).orElse(null);
     }
 
+    public List<Slide> getSlidesByCompanyId(Long companyId) {
+        return slideRepository.findByCompanyId(companyId).orElse(null);
+    }
+
     @Transactional
-    public Slide createSlide(CreateSlideRequest createSlideRequest, Long companyId, Long locationId, Long displayId) {
+    public Slide createSpecificSlide(CreateSlideRequest createSlideRequest, Long companyId, Long locationId, Long displayId) {
         Company company = companyService.getCompanyById(companyId);
         Location location = locationService.getLocationById(locationId);
         Display display = displayService.getDisplayById(displayId);
@@ -51,4 +55,16 @@ public class SlideService {
 
         return slideRepository.save(slide);
     }
+
+    @Transactional
+    public Slide createCompanySlide(CreateSlideRequest createSlideRequest, Long companyId) {
+        Company company = companyService.getCompanyById(companyId);
+        Image image = imageService.getImageById(createSlideRequest.getImageId());
+
+        Slide slide = slideTransformer.createSlideRequestToSlideEntity(createSlideRequest, image, null, null, company);
+        return slideRepository.save(slide);
+    }
+
+
+
 }

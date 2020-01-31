@@ -15,13 +15,14 @@ public class Slide extends UserDateAudit {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     private Display display;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     private Location location;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
+    @Column(nullable = false)
     private Company company;
 
     @OneToOne(cascade = CascadeType.DETACH)

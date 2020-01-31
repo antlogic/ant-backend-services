@@ -1,18 +1,12 @@
 package com.ant.backendservices.service;
 
 import com.ant.backendservices.bo.DisplayBO;
-import com.ant.backendservices.error.Error;
-import com.ant.backendservices.exception.AppException;
-import com.ant.backendservices.model.Company;
 import com.ant.backendservices.model.Display;
-import com.ant.backendservices.model.Location;
-import com.ant.backendservices.payload.request.display.RegisterDisplayRequest;
 import com.ant.backendservices.repository.DisplayRepository;
 import com.ant.backendservices.transformer.DisplayTransformer;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +57,7 @@ public class DisplayService {
         List<Display> displays = displayRepository.findByCompanyIdAndLocationId(companyId, locationId).orElse(null);
         CollectionUtils.emptyIfNull(displays).forEach(display -> {
             DisplayBO displayBO = displayTransformer.displayEntityToDisplayBO(display);
-            displayBO.setNumberOfSlides(CollectionUtils.emptyIfNull(slideService.getSlidesByCompanyId(companyId, locationId, display.getId())).size());
+            displayBO.setNumberOfSlides(CollectionUtils.emptyIfNull(slideService.getSlidesByCompanyIdLocationIdDisplayId(companyId, locationId, display.getId())).size());
             displayBOs.add(displayBO);
         });
         return displayBOs;
