@@ -66,8 +66,10 @@ public class SlideController {
 
     @PatchMapping("/locations/{locationId}/displays/{displayId}/slides/{slideId}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<RetrieveSlidesResponse> updateSlide(@Valid @RequestBody CreateSlideRequest createSlideRequest, @PathVariable String locationId, @PathVariable String displayId, @PathVariable String slideId) {
+    public ResponseEntity<RetrieveSlidesResponse> associateSlide(@PathVariable Long locationId, @PathVariable Long displayId, @PathVariable Long slideId) {
         Long companyId = authService.getLoggedInCompanyId();
-        return null;
+        slideService.associateSlideToDisplayAndLocation(companyId, locationId, displayId, slideId);
+
+        return getSpecificSlides(locationId, displayId);
     }
 }
