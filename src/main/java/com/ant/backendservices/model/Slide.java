@@ -4,6 +4,8 @@ import com.ant.backendservices.model.audit.UserDateAudit;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "slides", uniqueConstraints = {
@@ -16,13 +18,12 @@ public class Slide extends UserDateAudit {
     private Long id;
 
     @ManyToMany(cascade = CascadeType.REMOVE)
-    private Display display;
+    private List<Display> displays = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.REMOVE)
-    private Location location;
+    private List<Location> locations = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @Column(nullable = false)
+    @ManyToOne(cascade = CascadeType.REMOVE, optional = false)
     private Company company;
 
     @OneToOne(cascade = CascadeType.DETACH)

@@ -68,6 +68,6 @@ public class SlideController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<RetrieveSlidesResponse> updateSlide(@Valid @RequestBody CreateSlideRequest createSlideRequest, @PathVariable String locationId, @PathVariable String displayId, @PathVariable String slideId) {
         Long companyId = authService.getLoggedInCompanyId();
-
+        return null;
     }
 }

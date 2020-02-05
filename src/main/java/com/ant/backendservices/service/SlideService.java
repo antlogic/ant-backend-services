@@ -34,7 +34,7 @@ public class SlideService {
     private SlideTransformer slideTransformer;
 
     public List<Slide> getSlidesByCompanyIdLocationIdDisplayId(Long companyId, Long locationId, Long displayId) {
-        return slideRepository.findByCompanyIdAndLocationIdAndDisplayId(companyId, locationId, displayId).orElse(null);
+        return slideRepository.findByCompanyIdAndLocations_IdAndDisplays_Id(companyId, locationId, displayId).orElse(null);
     }
 
     public List<Slide> getSlidesByCompanyId(Long companyId) {
@@ -50,8 +50,9 @@ public class SlideService {
 
         //TODO: Need to do validations on objects and their ids
 
-        Slide slide = slideTransformer.createSlideRequestToSlideEntity(createSlideRequest, image, display,
-                location, company);
+        Slide slide = slideTransformer.createSlideRequestToSlideEntity(createSlideRequest, image, company);
+        slide.getDisplays().add(display);
+        slide.getLocations().add(location);
 
         return slideRepository.save(slide);
     }
@@ -61,7 +62,7 @@ public class SlideService {
         Company company = companyService.getCompanyById(companyId);
         Image image = imageService.getImageById(createSlideRequest.getImageId());
 
-        Slide slide = slideTransformer.createSlideRequestToSlideEntity(createSlideRequest, image, null, null, company);
+        Slide slide = slideTransformer.createSlideRequestToSlideEntity(createSlideRequest, image, company);
         return slideRepository.save(slide);
     }
 

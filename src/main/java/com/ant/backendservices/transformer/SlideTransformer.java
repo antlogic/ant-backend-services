@@ -17,8 +17,6 @@ public interface SlideTransformer {
             @Mapping(target = "name", source = "createSlideRequest.name"),
             @Mapping(target = "type", source = "createSlideRequest.type"),
             @Mapping(target = "transitionTimeMillis", source = "createSlideRequest.transitionTimeMillis", defaultExpression = "java(1000L)"),
-            @Mapping(target = "display", source = "display"),
-            @Mapping(target = "location", source = "location"),
             @Mapping(target = "company", source = "company"),
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
@@ -26,12 +24,10 @@ public interface SlideTransformer {
             @Mapping(target = "createdBy", ignore = true),
             @Mapping(target = "updatedBy", ignore = true)
     })
-    Slide createSlideRequestToSlideEntity(CreateSlideRequest createSlideRequest, Image image, Display display, Location location, Company company);
+    Slide createSlideRequestToSlideEntity(CreateSlideRequest createSlideRequest, Image image, Company company);
 
     @Mappings({
             @Mapping(target = "slideId", source = "id"),
-            @Mapping(target = "displayId", source = "display.id"),
-            @Mapping(target = "locationId", source = "location.id"),
             @Mapping(target = "image", source = "image")
     })
     SlideType slideEntityToSlideType(Slide slide);
