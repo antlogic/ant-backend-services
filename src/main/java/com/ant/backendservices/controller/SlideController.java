@@ -35,7 +35,7 @@ public class SlideController {
     public ResponseEntity<RetrieveSlidesResponse> getSpecificSlides(@PathVariable Long locationId, @PathVariable Long displayId) {
         Long companyId = authService.getLoggedInCompanyId();
         List<Slide> slides = slideService.getSlidesByCompanyIdLocationIdDisplayId(companyId, locationId, displayId);
-        RetrieveSlidesResponse response = slideTransformer.slideEntityListToRetrieveSlidesResponse(slides);
+        RetrieveSlidesResponse response = slideTransformer.slideEntityListToRetrieveSlidesResponse(slides, locationId, displayId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -52,7 +52,7 @@ public class SlideController {
     public ResponseEntity<RetrieveSlidesResponse> getCompanySlides() {
         Long companyId = authService.getLoggedInCompanyId();
         List<Slide> slides = slideService.getSlidesByCompanyId(companyId);
-        RetrieveSlidesResponse response = slideTransformer.slideEntityListToRetrieveSlidesResponse(slides);
+        RetrieveSlidesResponse response = slideTransformer.slideEntityListToRetrieveSlidesResponse(slides, null, null);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
